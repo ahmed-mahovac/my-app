@@ -16,7 +16,7 @@ class CreateVariantsTable extends Migration
     {
         DB::statement('
         CREATE TABLE variants (
-            variant_id INT PRIMARY KEY,
+            variant_id INT PRIMARY KEY AUTO_INCREMENT,
             product_id INT,
             name VARCHAR(255) NOT NULL,
             value VARCHAR(255) NOT NULL,

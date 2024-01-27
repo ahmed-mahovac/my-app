@@ -16,7 +16,7 @@ class CreateProductTypesTable extends Migration
     {
         DB::statement('
         CREATE TABLE product_types (
-            product_type_id INT PRIMARY KEY,
+            product_type_id INT PRIMARY KEY AUTO_INCREMENT,
             name VARCHAR(255) NOT NULL,
             description TEXT
         );
