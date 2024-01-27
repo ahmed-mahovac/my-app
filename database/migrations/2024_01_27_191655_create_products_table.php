@@ -25,6 +25,18 @@ class CreateProductsTable extends Migration
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (product_type_id) REFERENCES product_types(product_type_id)
         );');
+
+        // add full text index on 'name' column
+
+        Schema::table('products', function (Blueprint $table) {
+            $table->fullText('name');
+        });
+
+        /* raw way
+        DB::statement('ALTER TABLE products ADD FULLTEXT fulltext_index (name);');
+         */
+
+       
     }
 
     /**
