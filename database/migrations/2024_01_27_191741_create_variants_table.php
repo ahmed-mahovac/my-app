@@ -14,12 +14,13 @@ class CreateVariantsTable extends Migration
      */
     public function up()
     {
+        // should price exist? or value?
         DB::statement('
         CREATE TABLE variants (
             variant_id INT PRIMARY KEY AUTO_INCREMENT,
             product_id INT,
             name VARCHAR(255) NOT NULL,
-            value VARCHAR(255) NOT NULL,
+            price DECIMAL(10, 2) NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (product_id) REFERENCES products(product_id)

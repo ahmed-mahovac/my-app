@@ -11,4 +11,9 @@ class ProductType extends Model
 
     protected $primaryKey = 'product_type_id';
     public $timestamps = false;
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'product_type_id', 'product_type_id');
+    }
 }
