@@ -46,6 +46,9 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropIndex('products_name_fulltext');
+        });
         Schema::dropIfExists('products');
     }
 }
