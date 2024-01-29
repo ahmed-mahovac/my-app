@@ -36,4 +36,14 @@ class ProductService
             ->limit($limit)
             ->get();
     }
+
+    public function getProduct(int $id)
+    {
+        $product = Product::find($id);
+        // lazy loading
+        // doesn't make much difference in this case
+        // but isn't much worse from eager loading in this scenario
+        $product->load('productType');
+        return $product;
+    }
 }
