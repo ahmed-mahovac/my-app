@@ -25,6 +25,8 @@ class CreateVariantsTable extends Migration
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (product_id) REFERENCES products(product_id)
         );');
+
+        DB::statement('ALTER TABLE variants ADD INDEX variants_price_index (price);');
     }
 
     /**
@@ -34,6 +36,9 @@ class CreateVariantsTable extends Migration
      */
     public function down()
     {
+        Schema::table('variants', function (Blueprint $table) {
+            $table->dropIndex('variants_price_index');
+        });
         Schema::dropIfExists('variants');
     }
 }
