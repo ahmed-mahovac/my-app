@@ -7,10 +7,10 @@ class BaseSearchObject
     protected ?int $page;
     protected ?int $limit;
 
-    public function __construct($page, $limit)
+    public function __construct(array $queryParameters)
     {
-        $this->page = $page;
-        $this->limit = $limit;
+        $this->page = $queryParameters['page'] ?? null;
+        $this->limit = $queryParameters['limit'] ?? null;
     }
 
     public function getLimit()

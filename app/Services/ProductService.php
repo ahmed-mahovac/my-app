@@ -24,7 +24,14 @@ class ProductService
             $query->whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", [$name]);
         }
 
+        // eager loading of product type
+        // reduces number of queries if we want to include product type along with product
+        if($searchObject->isIncludeProductType()) {
+            $query->with('productType');
+        }
+
         // experiment with paginated method too
+        
         return $query->offset($page * $limit)
             ->limit($limit)
             ->get();

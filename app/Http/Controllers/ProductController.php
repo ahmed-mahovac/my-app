@@ -33,9 +33,7 @@ class ProductController extends Controller
 
         // search object
         $searchObject = new ProductSearchObject(
-            $request->page,
-            $request->limit,
-            $request->name
+            $request->query->count() > 0 ? $request->query->all() : []
         ); 
         
         return $this->productService->getAllProducts($searchObject);
