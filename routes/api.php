@@ -22,3 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/products', [ProductController::class, 'index']);
 
 Route::get('/products/{id}', [ProductController::class, 'show']);
+
+Route::get('/products/{id}/newestVariant', [ProductController::class, 'showWithNewestVariant']);

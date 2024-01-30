@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Requests\ProductSearchObject;
 use App\Models\Product;
+use App\Models\ProductWithNewestVariant;
 use Illuminate\Support\Facades\Log;
 
 class ProductService
@@ -24,10 +25,25 @@ class ProductService
             $query->whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", [$name]);
         }
 
-        // eager loading of product type
-        // reduces number of queries if we want to include product type along with product
+
         if($searchObject->isIncludeProductType()) {
             $query->with('productType');
+        }
+
+   
+        if ($searchObject->getFromVariantPrice()) {
+            $query->whereHas('variants', function ($query) use ($searchObject) {
+                $query->where('price', '>=', $searchObject->getFromVariantPrice());
+            });
+
+
+            //$query->with('variants');
+        }
+
+        if ($searchObject->getToVariantPrice()) {
+            $query->whereHas('variants', function ($query) use ($searchObject) {
+                $query->where('price', '<=', $searchObject->getToVariantPrice());
+            });
         }
 
         // experiment with paginated method too
@@ -40,10 +56,23 @@ class ProductService
     public function getProduct(int $id)
     {
         $product = Product::find($id);
-        // lazy loading
-        // doesn't make much difference in this case
-        // but isn't much worse from eager loading in this scenario
         $product->load('productType');
         return $product;
+    }
+
+    public function getProductWithNewestVariant(int $id)
+    {
+        /*
+        return ProductWithNewestVariant::with('newestVariant')
+         ->select([
+            'products.product_id as product_id',
+            'products.name as product_name',
+            'newestVariants.variant_id as newest_variant_id',
+            'newestVariant.name as newest_variant_name',
+            'newestVariant.price as newest_variant_price'
+         ])
+        ->find($id);
+        */
+        return ProductWithNewestVariant::find($id)->getInfo($id);
     }
 }

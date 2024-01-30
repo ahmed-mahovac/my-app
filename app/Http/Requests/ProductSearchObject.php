@@ -29,4 +29,14 @@ class ProductSearchObject extends BaseSearchObject
     {
         return $this->includeProductType;
     }
+
+    public function getFromVariantPrice()
+    {
+        return $this->fromVariantPrice;
+    }
+
+    public function getToVariantPrice()
+    {
+        return $this->toVariantPrice;
+    }
 }

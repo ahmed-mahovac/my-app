@@ -71,6 +71,11 @@ class ProductController extends Controller
         return $this->productService->getProduct($id);
     }
 
+    public function showWithNewestVariant($id)
+    {
+        return $this->productService->getProductWithNewestVariant($id);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
