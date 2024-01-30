@@ -73,6 +73,6 @@ class ProductService
          ])
         ->find($id);
         */
-        return ProductWithNewestVariant::find($id)->getInfo($id);
+        return ProductWithNewestVariant::find($id)->getInfo();
     }
 }
