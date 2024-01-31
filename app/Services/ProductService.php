@@ -16,12 +16,10 @@ class ProductService
         $page = $searchObject->getPage() ? $searchObject->getPage() : 0;
         $name = $searchObject->getName();
         
-        // pagination and filtering
 
         $query = Product::query();
         if ($name) {
             // full text search on name column
-            // by using match against syntax
             $query->whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", [$name]);
         }
 
@@ -62,17 +60,6 @@ class ProductService
 
     public function getProductWithNewestVariant(int $id)
     {
-        /*
-        return ProductWithNewestVariant::with('newestVariant')
-         ->select([
-            'products.product_id as product_id',
-            'products.name as product_name',
-            'newestVariants.variant_id as newest_variant_id',
-            'newestVariant.name as newest_variant_name',
-            'newestVariant.price as newest_variant_price'
-         ])
-        ->find($id);
-        */
         return ProductWithNewestVariant::find($id)->getInfo();
     }
 }
