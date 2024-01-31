@@ -43,4 +43,9 @@ class Handler extends ExceptionHandler
     public function report(Throwable $exception){
         Log::error('Exception: ' . $exception->getMessage() . ' Stack trace: ' . $exception->getTraceAsString());
     }
+
+    public function render($request, Throwable $exception)
+    {
+        return response()->json(['message' => 'An unexpected error occurred.'], 500);
+    }
 }
