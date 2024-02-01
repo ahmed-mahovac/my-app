@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTypeController;
 use Illuminate\Http\Request;
@@ -16,9 +17,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+
+    Route::delete('/productTypes/{id}', [ProductTypeController::class, 'destroy']);
+
+    Route::put('/productTypes/{id}', [ProductTypeController::class, 'update']);
+
 });
+
+// public routes
 
 Route::get('/products', [ProductController::class, 'index']);
 
@@ -28,6 +41,6 @@ Route::get('/products/{id}/newestVariant', [ProductController::class, 'showWithN
 
 Route::get('/productTypes', [ProductTypeController::class, 'index']);
 
-Route::delete('/productTypes/{id}', [ProductTypeController::class, 'destroy']);
+Route::post('login', [AuthController::class, 'login']);
 
-Route::put('/productTypes/{id}', [ProductTypeController::class, 'update']);
+Route::post('register', [AuthController::class, 'register']);

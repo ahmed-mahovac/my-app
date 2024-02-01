@@ -44,8 +44,11 @@ class Handler extends ExceptionHandler
         Log::error('Exception: ' . $exception->getMessage() . ' Stack trace: ' . $exception->getTraceAsString());
     }
 
+    // ne valja jer i kad je npr 403 on presretne i vrati 500
+    /*
     public function render($request, Throwable $exception)
     {
         return response()->json(['message' => 'An unexpected error occurred.'], 500);
     }
+    */
 }
