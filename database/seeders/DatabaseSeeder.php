@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Product;
 use App\Models\ProductType;
+use App\Models\Role;
 use App\Models\Variant;
 use Illuminate\Database\Seeder;
 
@@ -28,6 +29,9 @@ class DatabaseSeeder extends Seeder
                     );
                 });
             });
+
+            // run RolesTableSeeder too
+            $this->call(RolesTableSeeder::class);
 
     }
 }

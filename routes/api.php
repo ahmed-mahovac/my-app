@@ -20,15 +20,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('logout', [AuthController::class, 'logout']);
+
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
 
+    Route::middleware('restrictRole:admin')->group(function () {
 
-    Route::delete('/productTypes/{id}', [ProductTypeController::class, 'destroy']);
+        Route::delete('/productTypes/{id}', [ProductTypeController::class, 'destroy']);
 
-    Route::put('/productTypes/{id}', [ProductTypeController::class, 'update']);
+        Route::put('/productTypes/{id}', [ProductTypeController::class, 'update']);
 
+    });
 });
 
 // public routes
