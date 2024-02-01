@@ -47,3 +47,5 @@ Route::get('/productTypes', [ProductTypeController::class, 'index']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::post('register', [AuthController::class, 'register']);
+
+Route::post('/products/{id}/addVariant', [ProductController::class,'addVariant']);

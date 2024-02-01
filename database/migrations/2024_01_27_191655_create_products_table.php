@@ -29,6 +29,7 @@ class CreateProductsTable extends Migration
         // add full text index on 'name' column
 
         Schema::table('products', function (Blueprint $table) {
+            $table->string('state')->default('DRAFT');
             $table->fullText('name');
         });
 

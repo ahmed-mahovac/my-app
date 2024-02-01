@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\UserException;
 use App\Http\Requests\ProductSearchObject;
 use App\Models\Product;
 use App\Models\ProductWithNewestVariant;
@@ -9,6 +10,14 @@ use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
+
+    protected $stateMachineService;
+
+    public function __construct(StateMachineService $stateMachineService)
+    {
+        $this->stateMachineService = $stateMachineService;
+    }
+
     public function getAllProducts(ProductSearchObject $searchObject)
     {
         
@@ -61,5 +70,9 @@ class ProductService
     public function getProductWithNewestVariant(int $id)
     {
         return ProductWithNewestVariant::find($id)->getInfo();
+    }
+
+    public function addVariant(int $id, $attributes){
+        $this->stateMachineService->addVariant($id, $attributes);
     }
 }

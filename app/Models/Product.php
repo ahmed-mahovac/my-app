@@ -2,14 +2,29 @@
 
 namespace App\Models;
 
+use App\StateMachine\ActiveState;
+use App\StateMachine\DeletedState;
+use App\StateMachine\DraftState;
+use App\StateMachine\ProductState;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\ModelStates\HasStates;
 
 class Product extends Model
 {
-    use HasFactory;
-
+    use HasFactory, HasStates;
+    
     protected $primaryKey = 'product_id';
+
+    protected $states = [
+        'DRAFT' => DraftState::class,
+        'ACTIVE' => ActiveState::class,
+        'DELETED' => DeletedState::class,
+    ];
+
+    protected $casts = [
+        'state' => ProductState::class,
+    ];
 
     public function productType()
     {

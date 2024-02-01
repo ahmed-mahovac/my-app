@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UserException;
 use App\Http\Requests\GetProductsRequest;
 use App\Models\Product;
 use App\Services\ProductService;
@@ -12,7 +13,7 @@ use App\Http\Requests\ProductSearchObject;
 class ProductController extends Controller
 {
 
-    protected ProductService $productService;
+    protected $productService;
 
     // add a constructor with dependecy to ProductService
     public function __construct(ProductService $productService)
@@ -108,5 +109,9 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function addVariant(Request $request, $id){
+        $this->productService->addVariant($id, $request->all());
     }
 }
