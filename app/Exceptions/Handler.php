@@ -45,9 +45,11 @@ class Handler extends ExceptionHandler
     }
 
     // check
+    /*
     public function render($request, Throwable $exception)
     {
         return response()->json(['message' => 'An unexpected error occurred.'], 500);
     }
+    */
     
 }
