@@ -72,6 +72,10 @@ class ProductService
         return ProductWithNewestVariant::find($id)->getInfo();
     }
 
+    public function activateProduct(int $id, $attributes){
+        $this->stateMachineService->activateProduct($id, $attributes);
+    }
+
     public function addVariant(int $id, $attributes){
         $this->stateMachineService->addVariant($id, $attributes);
     }
