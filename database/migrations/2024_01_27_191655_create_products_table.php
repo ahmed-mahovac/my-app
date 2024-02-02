@@ -31,6 +31,8 @@ class CreateProductsTable extends Migration
         Schema::table('products', function (Blueprint $table) {
             $table->string('state')->default('DRAFT');
             $table->string('activated_by');
+            $table->date('valid_from');
+            $table->date('valid_to');
             $table->fullText('name');
         });
 

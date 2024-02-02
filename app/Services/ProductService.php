@@ -28,8 +28,8 @@ class ProductService
 
 
         $query = Product::query();
+
         if ($name) {
-            // full text search on name column
             $query->whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", [$name]);
         }
 
@@ -43,9 +43,6 @@ class ProductService
             $query->whereHas('variants', function ($query) use ($searchObject) {
                 $query->where('price', '>=', $searchObject->getFromVariantPrice());
             });
-
-
-            //$query->with('variants');
         }
 
         if ($searchObject->getToVariantPrice()) {
@@ -54,7 +51,13 @@ class ProductService
             });
         }
 
-        // experiment with paginated method too
+        if ($searchObject->getValidFrom()) {
+            $query->where('valid_from', '>=', $searchObject->getValidFrom());
+        }
+
+        if ($searchObject->getValidTo()) {
+            $query->where('valid_to', '<=', $searchObject->getValidTo());
+        }
 
         return $query->offset($page * $limit)
             ->limit($limit)
@@ -77,7 +80,7 @@ class ProductService
     {
         $product = Product::find($id);
 
-        if(!$product) {
+        if (!$product) {
             throw new NotFoundHttpException('Product not found');
         }
 
@@ -88,7 +91,7 @@ class ProductService
     {
         $product = Product::find($id);
 
-        if(!$product) {
+        if (!$product) {
             throw new NotFoundHttpException('Product not found');
         }
 
@@ -99,7 +102,7 @@ class ProductService
     {
         $product = Product::find($productId);
 
-        if(!$product) {
+        if (!$product) {
             throw new NotFoundHttpException('Product not found');
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 
 class ProductSearchObject extends BaseSearchObject
@@ -11,12 +12,17 @@ class ProductSearchObject extends BaseSearchObject
     private ?float $toVariantPrice;
     private bool $includeProductType;
 
+    private Date $validFrom;
+    private Date $validTo;
+
     public function __construct(array $queryParameters)
     {
         parent::__construct($queryParameters);
         $this->name = $queryParameters['name'] ?? null;
         $this->fromVariantPrice = $queryParameters['from_variant_price'] ?? null;
         $this->toVariantPrice = $queryParameters['to_variant_price'] ?? null;
+        $this->validFrom = $queryParameters['valid_from'] ?? null;
+        $this->validTo = $queryParameters['valid_to'] ?? null;
         $this->includeProductType = array_key_exists('include_product_type', $queryParameters) ? true : false;
     }
 
@@ -38,5 +44,15 @@ class ProductSearchObject extends BaseSearchObject
     public function getToVariantPrice()
     {
         return $this->toVariantPrice;
+    }
+
+    public function getValidFrom()
+    {
+        return $this->validFrom;
+    }
+
+    public function getValidTo()
+    {
+        return $this->validTo;
     }
 }

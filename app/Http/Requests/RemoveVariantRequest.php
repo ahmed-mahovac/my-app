@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetProductsRequest extends FormRequest
+class RemoveVariantRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,8 @@ class GetProductsRequest extends FormRequest
     public function rules()
     {
         return [
-            'page' => 'integer|min:0',
-            'limit' => 'integer|min:0|max:50',
-            'name' => 'string|max:20|min:1',
-            'from_variant_price' => 'numeric|min:0',
-            'to_variant_price' => 'numeric|min:0|after_or_equal:from_variant_price',
-            'valid_from' => 'date',
-            'valid_to' => 'date|after:valid_from',
+            'product_id' => 'required|integer',
+            'variant_id' => 'required|integer',
         ];
     }
 }
