@@ -15,6 +15,15 @@ class Product extends Model
 
     protected $primaryKey = 'product_id';
 
+    protected $fillable = [
+        'product_name',
+        'product_type_id',
+        'state',
+        'valid_from',
+        'valid_to',
+        'activated_by',
+    ];
+
 
     public function productType()
     {

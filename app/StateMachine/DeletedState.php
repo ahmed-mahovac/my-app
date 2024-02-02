@@ -5,6 +5,7 @@ namespace App\StateMachine;
 use App\Models\Product;
 use App\Models\Variant;
 use App\StateMachine\ProductState;
+use DateTime;
 use Illuminate\Support\Facades\Date;
 
 class DeletedState extends ProductState
@@ -19,7 +20,7 @@ class DeletedState extends ProductState
         throw new \Exception("Cannot remove variant from deleted product");
     }
 
-    public function activateProduct(Product $product, Date $validFrom, Date $validTo)
+    public function activateProduct(Product $product, DateTime $validFrom, DateTime $validTo)
     {
         throw new \Exception("Cannot activate deleted product");
     }

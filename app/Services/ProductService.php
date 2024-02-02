@@ -76,7 +76,7 @@ class ProductService
         return ProductWithNewestVariant::find($id)->getInfo();
     }
 
-    public function activateProduct(int $id, $inputData)
+    public function activateProduct(int $id, $inputData): Product
     {
         $product = Product::find($id);
 
@@ -84,7 +84,7 @@ class ProductService
             throw new NotFoundHttpException('Product not found');
         }
 
-        $this->stateMachineService->activateProduct($product, $inputData);
+        return $this->stateMachineService->activateProduct($product, $inputData);
     }
 
     public function addVariant(int $id, $attributes)

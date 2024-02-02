@@ -7,8 +7,10 @@ use App\StateMachine\ActiveState;
 use App\StateMachine\DeletedState;
 use App\StateMachine\DraftState;
 use App\StateMachine\StateEnum;
+use DateTime;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class StateMachineService
 {
@@ -20,7 +22,8 @@ class StateMachineService
     public function activateProduct(Product $product, $inputData)
     {
         $state = $this->createProductState($product->state);
-        $state->activateProduct($product, $inputData['valid_from'], $inputData['valid_to']);
+        $product = $state->activateProduct($product, new DateTime($inputData['valid_from']), new DateTime($inputData['valid_to']));
+        return $product;
     }
 
     public function addVariant(Product $product, $variantAttributes)

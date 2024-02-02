@@ -11,6 +11,7 @@ use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ProductSearchObject;
+use App\Http\Requests\RemoveVariantRequest;
 
 class ProductController extends Controller
 {
@@ -115,7 +116,13 @@ class ProductController extends Controller
 
     public function activateProduct(ActivateProductRequest $request, $id)
     {
-        $this->productService->activateProduct($id, $request->all());
+        $product = $this->productService->activateProduct($id, $request->all());
+
+        return response()->json([
+            'message' => 'Successfully activated product!',
+            'product' => $product
+        ]);
+
     }
 
     public function addVariant(AddVariantRequest $request, $productId)
@@ -123,7 +130,7 @@ class ProductController extends Controller
         $this->productService->addVariant($productId, $request->all());
     }
 
-    public function removeVariant(Request $request, $productId, $variantId)
+    public function removeVariant(RemoveVariantRequest $request, $productId, $variantId)
     {
         $this->productService->removeVariant($productId, $variantId);
     }
