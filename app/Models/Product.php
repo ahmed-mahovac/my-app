@@ -15,9 +15,6 @@ class Product extends Model
 
     protected $primaryKey = 'product_id';
 
-    protected $casts = [
-        'state' => ProductState::class,
-    ];
 
     public function productType()
     {
