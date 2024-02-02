@@ -8,19 +8,12 @@ use App\StateMachine\DraftState;
 use App\StateMachine\ProductState;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\ModelStates\HasStates;
 
 class Product extends Model
 {
-    use HasFactory, HasStates;
-    
-    protected $primaryKey = 'product_id';
+    use HasFactory;
 
-    protected $states = [
-        'DRAFT' => DraftState::class,
-        'ACTIVE' => ActiveState::class,
-        'DELETED' => DeletedState::class,
-    ];
+    protected $primaryKey = 'product_id';
 
     protected $casts = [
         'state' => ProductState::class,
@@ -36,5 +29,4 @@ class Product extends Model
     {
         return $this->hasMany(Variant::class, 'product_id', 'product_id');
     }
-
 }

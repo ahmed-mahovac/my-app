@@ -7,6 +7,7 @@ use App\Http\Requests\ProductSearchObject;
 use App\Models\Product;
 use App\Models\ProductWithNewestVariant;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductService
 {
@@ -20,11 +21,11 @@ class ProductService
 
     public function getAllProducts(ProductSearchObject $searchObject)
     {
-        
+
         $limit = $searchObject->getLimit() ? $searchObject->getLimit() : 10;
         $page = $searchObject->getPage() ? $searchObject->getPage() : 0;
         $name = $searchObject->getName();
-        
+
 
         $query = Product::query();
         if ($name) {
@@ -33,11 +34,11 @@ class ProductService
         }
 
 
-        if($searchObject->isIncludeProductType()) {
+        if ($searchObject->isIncludeProductType()) {
             $query->with('productType');
         }
 
-   
+
         if ($searchObject->getFromVariantPrice()) {
             $query->whereHas('variants', function ($query) use ($searchObject) {
                 $query->where('price', '>=', $searchObject->getFromVariantPrice());
@@ -54,7 +55,7 @@ class ProductService
         }
 
         // experiment with paginated method too
-        
+
         return $query->offset($page * $limit)
             ->limit($limit)
             ->get();
@@ -72,11 +73,36 @@ class ProductService
         return ProductWithNewestVariant::find($id)->getInfo();
     }
 
-    public function activateProduct(int $id, $attributes){
-        $this->stateMachineService->activateProduct($id, $attributes);
+    public function activateProduct(int $id, $inputData)
+    {
+        $product = Product::find($id);
+
+        if(!$product) {
+            throw new NotFoundHttpException('Product not found');
+        }
+
+        $this->stateMachineService->activateProduct($product, $inputData);
     }
 
-    public function addVariant(int $id, $attributes){
-        $this->stateMachineService->addVariant($id, $attributes);
+    public function addVariant(int $id, $attributes)
+    {
+        $product = Product::find($id);
+
+        if(!$product) {
+            throw new NotFoundHttpException('Product not found');
+        }
+
+        $this->stateMachineService->addVariant($product, $attributes);
+    }
+
+    public function removeVariant(int $productId, int $variantId)
+    {
+        $product = Product::find($productId);
+
+        if(!$product) {
+            throw new NotFoundHttpException('Product not found');
+        }
+
+        $this->stateMachineService->removeVariant($product, $variantId);
     }
 }

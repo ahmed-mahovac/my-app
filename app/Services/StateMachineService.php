@@ -4,6 +4,10 @@ namespace App\Services;
 
 use App\Models\Product;
 use App\StateMachine\ActiveState;
+use App\StateMachine\DeletedState;
+use App\StateMachine\DraftState;
+use App\StateMachine\StateEnum;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class StateMachineService
@@ -13,17 +17,34 @@ class StateMachineService
         //
     }
 
-    public function activateProduct(int $id, $attributes) {
-        $product = Product::find($id);
-        // extract logic to transitionTo method?
-        $product->state->transitionTo(ActiveState::class);
-        $product->update(['valid_from' => $attributes['valid_from'], 'valid_to' => $attributes['valid_to'], 'activated_by' => Auth::user()->name]);
-    }
-
-    public function addVariant(int $id, $variantAttributes)
+    public function activateProduct(Product $product, $inputData)
     {
-        $product = Product::find($id);
-        $product->state->addVariant($variantAttributes);
+        $state = $this->createProductState($product->state);
+        $state->activateProduct($product, $inputData['valid_from'], $inputData['valid_to']);
     }
 
+    public function addVariant(Product $product, $variantAttributes)
+    {
+        $state = $this->createProductState($product->state);
+        $state->addVariant($product, $variantAttributes);
+    }
+
+    public function removeVariant(Product $product, int $variantId)
+    {
+        $state = $this->createProductState($product->state);
+        $state->removeVariant($product, $variantId);
+    }
+
+    private static function createProductState(string $state){
+        switch ($state) {
+            case 'DRAFT':
+                return app(DraftState::class);
+            case 'ACTIVE':
+                return app(ActiveState::class);
+            case 'DELETED':
+                return app(DeletedState::class);
+            default:
+                throw new Exception("Unknown state. Unable to create State object");
+        }
+    }
 }

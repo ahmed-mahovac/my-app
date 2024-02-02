@@ -33,12 +33,17 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // state transitions
 
-        Route::post('/products/{id}/activate', [ProductController::class,'activateProduct']);
+        Route::post('/products/{id}/activate', [ProductController::class, 'activateProduct']);
 
-        Route::post('/products/{id}/deactivate', [ProductController::class,'deactivateProduct']);
+        Route::post('/products/{id}/deactivate', [ProductController::class, 'deactivateProduct']);
 
-        Route::post('/products/{id}/deleted', [ProductController::class,'deleteProduct']);
+        Route::post('/products/{id}/deleted', [ProductController::class, 'deleteProduct']);
 
+        // state operations
+
+        Route::post('/products/{id}/variants', [ProductController::class, 'addVariant']);
+
+        Route::delete('/products/{productId}/variants/{variantId}', [ProductController::class, 'removeVariant']);
     });
 });
 
@@ -55,5 +60,3 @@ Route::get('/productTypes', [ProductTypeController::class, 'index']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::post('register', [AuthController::class, 'register']);
-
-Route::post('/products/{id}/addVariant', [ProductController::class,'addVariant']);

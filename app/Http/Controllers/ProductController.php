@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\UserException;
+use App\Http\Requests\ActivateProductRequest;
+use App\Http\Requests\AddVariantRequest;
 use App\Http\Requests\GetProductsRequest;
 use App\Models\Product;
 use App\Services\ProductService;
@@ -35,8 +37,8 @@ class ProductController extends Controller
         // search object
         $searchObject = new ProductSearchObject(
             $request->query->count() > 0 ? $request->query->all() : []
-        ); 
-        
+        );
+
         return $this->productService->getAllProducts($searchObject);
     }
 
@@ -111,7 +113,18 @@ class ProductController extends Controller
         //
     }
 
-    public function addVariant(Request $request, $id){
-        $this->productService->addVariant($id, $request->all());
+    public function activateProduct(ActivateProductRequest $request, $id)
+    {
+        $this->productService->activateProduct($id, $request->all());
+    }
+
+    public function addVariant(AddVariantRequest $request, $productId)
+    {
+        $this->productService->addVariant($productId, $request->all());
+    }
+
+    public function removeVariant(Request $request, $productId, $variantId)
+    {
+        $this->productService->removeVariant($productId, $variantId);
     }
 }
