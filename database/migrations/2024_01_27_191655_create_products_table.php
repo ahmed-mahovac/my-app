@@ -30,9 +30,9 @@ class CreateProductsTable extends Migration
 
         Schema::table('products', function (Blueprint $table) {
             $table->string('state')->default('DRAFT');
-            $table->string('activated_by');
-            $table->date('valid_from');
-            $table->date('valid_to');
+            $table->string('activated_by')->nullable();
+            $table->date('valid_from')->nullable();
+            $table->date('valid_to')->nullable();
             $table->fullText('name');
         });
 
