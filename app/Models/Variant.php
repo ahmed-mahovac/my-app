@@ -9,6 +9,10 @@ class Variant extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'price',
+    ];
     protected $primaryKey = 'variant_id';
 
     public function product()
