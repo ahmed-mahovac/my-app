@@ -133,5 +133,8 @@ class ProductController extends Controller
     public function removeVariant(RemoveVariantRequest $request, $productId, $variantId)
     {
         $this->productService->removeVariant($productId, $variantId);
+        return response()->json([
+            'message' => 'Successfully removed variant from product!',
+        ]);
     }
 }

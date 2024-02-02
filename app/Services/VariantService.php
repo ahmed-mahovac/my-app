@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
+use App\Models\Product;
 use App\Models\Variant;
 
 class VariantService
 {
 
-    public function addVariant($product, $variantAttributes)
+    public function addVariant(Product $product, $variantAttributes)
     {
         $product->variants()->create([
             'name' => $variantAttributes['name'],
@@ -16,8 +17,8 @@ class VariantService
 
     }
 
-    public function removeVariant($product, $variantAttributes)
+    public function removeVariant(Product $product, int $variantId)
     {
-        
+        $product->variants()->where('variant_id', $variantId)->delete();
     }
 }

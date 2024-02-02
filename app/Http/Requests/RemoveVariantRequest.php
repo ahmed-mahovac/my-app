@@ -24,8 +24,7 @@ class RemoveVariantRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_id' => 'required|integer',
-            'variant_id' => 'required|integer',
+           
         ];
     }
 }
