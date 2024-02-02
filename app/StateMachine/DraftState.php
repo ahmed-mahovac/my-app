@@ -35,7 +35,6 @@ class DraftState extends ProductState
     public function activateProduct(Product $product, DateTime $validFrom, DateTime $validTo)
     {
         parent::moveToState($product, StateEnum::ACTIVE);
-        Log::info("uso");
         $product->update(['valid_from' => $validFrom, 'valid_to' => $validTo, 'activated_by' => Auth::user()->name]);
         return $product;
     }

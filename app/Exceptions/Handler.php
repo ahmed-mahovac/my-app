@@ -40,16 +40,19 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function report(Throwable $exception){
+    public function report(Throwable $exception)
+    {
         Log::error('Exception: ' . $exception->getMessage() . ' Stack trace: ' . $exception->getTraceAsString());
     }
 
-    // check
-    /*
+
     public function render($request, Throwable $exception)
     {
-        return response()->json(['message' => 'An unexpected error occurred.'], 500);
+        if ($this->isHttpException($exception)) {
+            return $this->renderHttpException($exception);
+        } else {
+            // e.g. Eloquent exception
+            return response()->json(['message' => 'An unexpected error occurred.'], 500);
+        }
     }
-    */
-    
 }

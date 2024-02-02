@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class RegisterUserRequest extends FormRequest
 {
@@ -29,5 +32,15 @@ class RegisterUserRequest extends FormRequest
             'password' => 'required|string',
             'c_password' => 'required|same:password'
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'error' => [
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ],
+        ], JsonResponse::HTTP_BAD_REQUEST));
     }
 }

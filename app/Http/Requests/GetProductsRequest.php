@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class GetProductsRequest extends FormRequest
 {
@@ -32,5 +35,16 @@ class GetProductsRequest extends FormRequest
             'valid_from' => 'date',
             'valid_to' => 'date|after:valid_from',
         ];
+    }
+
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'error' => [
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ],
+        ], JsonResponse::HTTP_BAD_REQUEST));
     }
 }
