@@ -57,6 +57,6 @@ Route::get('/products/{id}/newestVariant', [ProductController::class, 'showWithN
 
 Route::get('/productTypes', [ProductTypeController::class, 'index']);
 
-Route::post('login', [AuthController::class, 'login']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
 
 Route::post('register', [AuthController::class, 'register']);
