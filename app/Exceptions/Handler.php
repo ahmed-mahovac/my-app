@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -48,11 +49,21 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
+        
         if ($this->isHttpException($exception)) {
             return $this->renderHttpException($exception);
-        } else {
-            // e.g. Eloquent exception
-            return response()->json(['message' => 'An unexpected error occurred.'], 500);
+        } 
+        else if($exception instanceof UserException){
+            return response()->json(['message' => 'User exception. An unexpected has error occurred.'], 500);
         }
+        else{
+            // e.g. Eloquent exception
+            return response()->json(['message' => 'Server error. An unexpected error has occurred.'], 500);
+        }
+    }
+
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        return response()->json(['message'=> 'Unauthenticated.'], 401);
     }
 }
