@@ -2,17 +2,26 @@
 
 namespace App\Services;
 
+use App\Http\Requests\ProductTypeSearchObject;
 use App\Models\ProductType;
+use App\Services\Cache\CacheTags;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class ProductTypeService
 {
-    public function getAllProductTypes()
+    public function getAllProductTypes(ProductTypeSearchObject $searchObject)
     {
-        if (!Cache::has("product_types")) {
-            Cache::put("product_types", ProductType::all());
+        $key = $this->getHashedKey($searchObject->all());
+
+        Log::info(Cache::getStore()->getPrefix());
+
+        if (!Cache::has($key)) {
+            Log::info("No cache found for key: " . $key);
+            Cache::put($key, ProductType::all()); // change
         }
-        return Cache::get("product_types");
+        return Cache::get($key);
     }
 
     public function getProductType(int $id)
@@ -23,7 +32,7 @@ class ProductTypeService
     public function createProductType(array $data)
     {
         $newProductType = ProductType::create($data);
-        Cache::forget("product_types");
+        $this->clearCache();
         return $newProductType;
     }
 
@@ -31,7 +40,7 @@ class ProductTypeService
     {
         $productType = ProductType::find($id);
         $productType->update($data);
-        Cache::forget("product_types");
+        $this->clearCache();
         return $productType;
     }
 
@@ -39,7 +48,19 @@ class ProductTypeService
     {
         $productType = ProductType::find($id);
         $productType->delete();
-        Cache::forget("product_types");
+        $this->clearCache();
         return $productType;
+    }
+
+    private function getHashedKey(array $params)
+    {
+        ksort($params);
+        Log::info("params: " . json_encode($params));
+        return CacheTags::PRODUCT_TYPES . md5(json_encode($params));
+    }
+
+    private function clearCache()
+    {
+        Cache::flush();
     }
 }

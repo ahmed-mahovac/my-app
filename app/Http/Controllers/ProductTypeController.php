@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductTypeSearchObject;
+use App\Models\ProductType;
 use App\Services\ProductTypeService;
 use Illuminate\Filesystem\Cache;
 use Illuminate\Http\Request;
@@ -21,9 +23,10 @@ class ProductTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->productTypeService->getAllProductTypes();
+        $searchObject = new ProductTypeSearchObject($request->all());
+        return $this->productTypeService->getAllProductTypes($searchObject);
     }
 
     /**

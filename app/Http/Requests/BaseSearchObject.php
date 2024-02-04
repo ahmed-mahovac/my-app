@@ -22,4 +22,8 @@ class BaseSearchObject
     {
         return $this->page;
     }
+
+    public function all() {
+        return get_object_vars($this);
+    }
 }
