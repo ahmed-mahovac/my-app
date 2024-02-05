@@ -3,7 +3,7 @@
 import { useState } from "react";
 import InputField from "../components/InputField";
 
-export default function page() {
+export default function login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -48,7 +48,7 @@ export default function page() {
         </div>
 
         <p className="text-sm text-gray-600">
-          Don't have an account? <a href="#">Sign up</a>.
+          Don't have an account? <a href="/register">Sign up</a>.
         </p>
       </form>
     </div>
