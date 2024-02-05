@@ -21,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
             'App\Services\Interfaces\ProductServiceInterface',
             'App\Services\ProductService'
         );
+        $this->app->bind(
+            'App\Services\Interfaces\VariantServiceInterface',
+            'App\Services\VariantService'
+        );
     }
 
     /**

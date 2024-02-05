@@ -6,11 +6,8 @@ use App\Models\Product;
 use App\StateMachine\ActiveState;
 use App\StateMachine\DeletedState;
 use App\StateMachine\DraftState;
-use App\StateMachine\StateEnum;
 use DateTime;
 use Exception;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class StateMachineService
 {

@@ -4,7 +4,7 @@ namespace App\Services\Interfaces;
 
 use App\Http\Requests\ProductTypeSearchObject;
 
-interface ProductTypeServiceInterface
+interface ProductTypeServiceInterface extends BaseServiceInterface
 {
     public function getAllProductTypes(ProductTypeSearchObject $searchObject);
     public function getProductType(int $id);

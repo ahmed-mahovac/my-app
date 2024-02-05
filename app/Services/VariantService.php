@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Product;
 use App\Models\Variant;
 
-class VariantService
+class VariantService extends BaseService 
 {
 
     public function addVariant(Product $product, $variantAttributes)

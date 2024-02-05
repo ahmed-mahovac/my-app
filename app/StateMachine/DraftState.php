@@ -4,6 +4,7 @@ namespace App\StateMachine;
 
 use App\Models\Product;
 use App\Models\Variant;
+use App\Services\Interfaces\VariantServiceInterface;
 use App\Services\VariantService;
 use App\StateMachine\ProductState;
 use DateTime;
@@ -16,7 +17,7 @@ class DraftState extends ProductState
 
     protected $variantService;
 
-    public function __construct(VariantService $variantService)
+    public function __construct(VariantServiceInterface $variantService)
     {
         $this->variantService = $variantService;
     }
