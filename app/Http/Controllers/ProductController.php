@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ProductSearchObject;
 use App\Http\Requests\RemoveVariantRequest;
+use App\Services\Interfaces\ProductServiceInterface;
 
 class ProductController extends Controller
 {
@@ -19,7 +20,7 @@ class ProductController extends Controller
     protected $productService;
 
     // add a constructor with dependecy to ProductService
-    public function __construct(ProductService $productService)
+    public function __construct(ProductServiceInterface $productService)
     {
         $this->productService = $productService;
     }

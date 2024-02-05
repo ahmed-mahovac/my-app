@@ -5,21 +5,24 @@ namespace App\Services;
 use App\Http\Requests\ProductTypeSearchObject;
 use App\Models\ProductType;
 use App\Services\Cache\CacheTags;
+use App\Services\Interfaces\ProductTypeServiceInterface;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
-class ProductTypeService
+class ProductTypeService extends BaseService implements ProductTypeServiceInterface
 {
     public function getAllProductTypes(ProductTypeSearchObject $searchObject)
     {
         $key = $this->getHashedKey($searchObject->all());
 
-        Log::info(Cache::getStore()->getPrefix());
+        $query = ProductType::query();
+
+        $query = parent::getPaginatedQuery($searchObject, $query);
 
         if (!Cache::has($key)) {
             Log::info("No cache found for key: " . $key);
-            Cache::put($key, ProductType::all()); // change
+            Cache::put($key, $query->get());
         }
         return Cache::get($key);
     }
@@ -55,7 +58,6 @@ class ProductTypeService
     private function getHashedKey(array $params)
     {
         ksort($params);
-        Log::info("params: " . json_encode($params));
         return CacheTags::PRODUCT_TYPES . md5(json_encode($params));
     }
 

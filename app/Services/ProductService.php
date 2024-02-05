@@ -6,10 +6,11 @@ use App\Exceptions\UserException;
 use App\Http\Requests\ProductSearchObject;
 use App\Models\Product;
 use App\Models\ProductWithNewestVariant;
+use App\Services\Interfaces\ProductServiceInterface;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ProductService
+class ProductService extends BaseService implements ProductServiceInterface
 {
 
     protected $stateMachineService;
@@ -22,46 +23,11 @@ class ProductService
     public function getAllProducts(ProductSearchObject $searchObject)
     {
 
-        $limit = $searchObject->getLimit() ? $searchObject->getLimit() : 10;
-        $page = $searchObject->getPage() ? $searchObject->getPage() : 0;
-        $name = $searchObject->getName();
+        $query =  parent::getPaginatedQuery($searchObject, Product::query());
 
+        $query = $this->additionalFilters($searchObject, $query);
 
-        $query = Product::query();
-
-        if ($name) {
-            $query->whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", [$name]);
-        }
-
-
-        if ($searchObject->isIncludeProductType()) {
-            $query->with('productType');
-        }
-
-
-        if ($searchObject->getFromVariantPrice()) {
-            $query->whereHas('variants', function ($query) use ($searchObject) {
-                $query->where('price', '>=', $searchObject->getFromVariantPrice());
-            });
-        }
-
-        if ($searchObject->getToVariantPrice()) {
-            $query->whereHas('variants', function ($query) use ($searchObject) {
-                $query->where('price', '<=', $searchObject->getToVariantPrice());
-            });
-        }
-
-        if ($searchObject->getValidFrom()) {
-            $query->where('valid_from', '>=', $searchObject->getValidFrom());
-        }
-
-        if ($searchObject->getValidTo()) {
-            $query->where('valid_to', '<=', $searchObject->getValidTo());
-        }
-
-        return $query->offset($page * $limit)
-            ->limit($limit)
-            ->get();
+        return $query->get();
     }
 
     public function getProduct(int $id)
@@ -129,5 +95,43 @@ class ProductService
         }
 
         $this->stateMachineService->removeVariant($product, $variantId);
+    }
+
+    private function additionalFilters(ProductSearchObject $searchObject, $query)
+    {
+        $name = $searchObject->getName();
+
+        if ($name) {
+            $query->whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", [$name]);
+        }
+
+
+        if ($searchObject->isIncludeProductType()) {
+            $query->with('productType');
+        }
+
+
+        if ($searchObject->getFromVariantPrice()) {
+            $query->whereHas('variants', function ($query) use ($searchObject) {
+                $query->where('price', '>=', $searchObject->getFromVariantPrice());
+            });
+        }
+
+        if ($searchObject->getToVariantPrice()) {
+            $query->whereHas('variants', function ($query) use ($searchObject) {
+                $query->where('price', '<=', $searchObject->getToVariantPrice());
+            });
+        }
+
+        if ($searchObject->getValidFrom()) {
+            $query->where('valid_from', '>=', $searchObject->getValidFrom());
+        }
+
+        if ($searchObject->getValidTo()) {
+            $query->where('valid_to', '<=', $searchObject->getValidTo());
+        }
+
+
+        return $query;
     }
 }

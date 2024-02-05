@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductTypeSearchObject;
 use App\Models\ProductType;
+use App\Services\Interfaces\ProductTypeServiceInterface;
 use App\Services\ProductTypeService;
 use Illuminate\Filesystem\Cache;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class ProductTypeController extends Controller
 
     protected $productTypeService;
 
-    public function __construct(ProductTypeService $productTypeService)
+    public function __construct(ProductTypeServiceInterface $productTypeService)
     {
         $this->productTypeService = $productTypeService;
     }
