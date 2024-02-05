@@ -38,4 +38,15 @@ class DraftState extends ProductState
         $product->update(['valid_from' => $validFrom, 'valid_to' => $validTo, 'activated_by' => Auth::user()->name]);
         return $product;
     }
+
+    public function draftProduct(Product $product)
+    {
+        throw new \Exception("Product is already in draft state");
+    }
+
+    public function deleteProduct(Product $product)
+    {
+        parent::moveToState($product, StateEnum::DELETED);
+        return $product;
+    }
 }

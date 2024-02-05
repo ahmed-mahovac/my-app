@@ -24,4 +24,16 @@ class ActiveState extends ProductState
     {
         throw new \Exception("Cannot activate product which is already active");
     }
+
+    public function draftProduct(Product $product)
+    {
+        parent::moveToState($product, StateEnum::DRAFT);
+        return $product;
+    }
+
+    public function deleteProduct(Product $product)
+    {
+        parent::moveToState($product, StateEnum::DELETED);
+        return $product;
+    }
 }

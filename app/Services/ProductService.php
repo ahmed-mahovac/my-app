@@ -87,6 +87,28 @@ class ProductService
         return $this->stateMachineService->activateProduct($product, $inputData);
     }
 
+    public function draftProduct(int $id, $inputData): Product
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            throw new NotFoundHttpException('Product not found');
+        }
+
+        return $this->stateMachineService->draftProduct($product, $inputData);
+    }
+
+    public function deleteProduct(int $id, $inputData): Product
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            throw new NotFoundHttpException('Product not found');
+        }
+
+        return $this->stateMachineService->deleteProduct($product, $inputData);
+    }
+
     public function addVariant(int $id, $attributes)
     {
         $product = Product::find($id);

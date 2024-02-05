@@ -35,9 +35,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::post('/products/{id}/activate', [ProductController::class, 'activateProduct']);
 
-        Route::post('/products/{id}/deactivate', [ProductController::class, 'deactivateProduct']);
+        Route::post('/products/{id}/draft', [ProductController::class, 'draftProduct']);
 
-        Route::post('/products/{id}/deleted', [ProductController::class, 'deleteProduct']);
+        Route::post('/products/{id}/delete', [ProductController::class, 'deleteProduct']);
 
         // state operations
 

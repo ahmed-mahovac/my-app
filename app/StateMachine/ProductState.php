@@ -18,6 +18,9 @@ abstract class ProductState
 
     abstract public function activateProduct(Product $product, DateTime $validFrom, DateTime $validTo);
 
+    abstract public function draftProduct(Product $product);
+
+    abstract public function deleteProduct(Product $product);
     public function moveToState(Product $product, string $state): void
     {
         $product->state = $state;

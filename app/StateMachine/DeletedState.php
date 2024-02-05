@@ -24,4 +24,14 @@ class DeletedState extends ProductState
     {
         throw new \Exception("Cannot activate deleted product");
     }
+
+    public function draftProduct(Product $product)
+    {
+        throw new \Exception("Cannot draft deleted product");
+    }
+
+    public function deleteProduct(Product $product)
+    {
+        throw new \Exception("Product is already deleted");
+    }
 }

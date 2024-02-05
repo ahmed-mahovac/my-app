@@ -26,6 +26,20 @@ class StateMachineService
         return $product;
     }
 
+    public function draftProduct(Product $product, $inputData)
+    {
+        $state = $this->createProductState($product->state);
+        $product = $state->draft();
+        return $product;
+    }
+    
+    public function deleteProduct(Product $product, $inputData)
+    {
+        $state = $this->createProductState($product->state);
+        $product = $state->delete();
+        return $product;
+    }
+
     public function addVariant(Product $product, $variantAttributes)
     {
         $state = $this->createProductState($product->state);

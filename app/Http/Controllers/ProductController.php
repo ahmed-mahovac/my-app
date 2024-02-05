@@ -125,6 +125,28 @@ class ProductController extends Controller
 
     }
 
+    public function draftProduct(Request $request, $id)
+    {
+        $product = $this->productService->draftProduct($id, $request->all());
+
+        return response()->json([
+            'message' => 'Successfully drafted product!',
+            'product' => $product
+        ]);
+
+    }
+
+    public function deleteProduct(Request $request, $id)
+    {
+        $product = $this->productService->deleteProduct($id, $request->all());
+
+        return response()->json([
+            'message' => 'Successfully deleted product!',
+            'product' => $product
+        ]);
+
+    }
+
     public function addVariant(AddVariantRequest $request, $productId)
     {
         $this->productService->addVariant($productId, $request->all());
