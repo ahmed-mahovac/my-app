@@ -1,4 +1,5 @@
 import axios from "axios";
+import attachTokenInterceptor from "./middleware/tokenInterceptor";
 
 const BASE_URL = "http://localhost:8000/api";
 
@@ -9,6 +10,8 @@ const axiosInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+attachTokenInterceptor(axiosInstance);
 
 export type UserRegister = {
   name: string;
@@ -57,7 +60,7 @@ export const login = async (user: UserLogin): Promise<TokenResponse> => {
 
 export const logout = async (): Promise<LogoutResponse> => {
   try {
-    const response = await axiosInstance.get("/logout", {headers: {Authorization: `Bearer ${localStorage.getItem("token")}`}});
+    const response = await axiosInstance.get("/logout");
     return response.data;
   } catch (error) {
     console.error("Logout error: ", error);
@@ -67,7 +70,7 @@ export const logout = async (): Promise<LogoutResponse> => {
 
 export const getCurrentUser = async (token: string) => {
   try {
-    const response = await axiosInstance.get("/user", {headers: {Authorization: `Bearer ${token}`}});
+    const response = await axiosInstance.get("/user");
     return response.data;
   } catch (error) {
     console.error("Get user error: ", error);
