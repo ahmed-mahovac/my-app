@@ -6,7 +6,7 @@ import { useAuth } from "../Context/AuthContext";
 import Error from "@/components/Error";
 import { ErrorType, useException } from "../Context/APIExceptionContext";
 
-export default function Login() {
+const login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -68,4 +68,6 @@ export default function Login() {
       </form>
     </div>
   );
-}
+};
+
+export default login;

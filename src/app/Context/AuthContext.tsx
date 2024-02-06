@@ -26,12 +26,12 @@ interface User {
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
+  isLoading: boolean;
   login: (userData: UserLogin) => void;
   logout: () => void;
   getToken: () => string | null;
   register: (userData: UserRegister) => void;
-};
-
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -43,8 +43,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const {setException} = useException();
+  const { setException } = useException();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -53,10 +54,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         .then((user) => {
           setUser(user);
           setIsLoggedIn(true);
+          setIsLoading(false);
         })
         .catch((error: AxiosError<ErrorResponse>) => {
-          setException({...error, type: ErrorType.auth});
+          setException({ ...error, type: ErrorType.auth });
+          setIsLoading(false);
+          setIsLoggedIn(false);
         });
+    } else {
+      setIsLoading(false);
     }
   }, []);
 
@@ -70,7 +76,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setToken(response.access_token);
       })
       .catch((error: AxiosError<ErrorResponse>) => {
-        setException({...error, type: ErrorType.login});
+        setException({ ...error, type: ErrorType.login });
       });
   };
 
@@ -84,7 +90,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       })
       .catch((error: AxiosError<ErrorResponse>) => {
         console.log(error);
-        setException({...error, type: ErrorType.register});
+        setException({ ...error, type: ErrorType.register });
       });
   };
 
@@ -97,7 +103,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setToken(null);
       })
       .catch((error: AxiosError<ErrorResponse>) => {
-        setException({...error, type: ErrorType.auth});
+        setException({ ...error, type: ErrorType.auth });
       });
   };
 
@@ -108,6 +114,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const value: AuthContextType = {
     user,
     isLoggedIn,
+    isLoading,
     login,
     logout,
     getToken,

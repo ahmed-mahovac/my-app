@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { ProductResponse, getProducts } from "../api/products";
+import withAuth from "@/components/WithAuth";
 
 const ProductsList = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -73,4 +74,4 @@ const ProductsList = () => {
   );
 };
 
-export default ProductsList;
+export default withAuth(ProductsList);
