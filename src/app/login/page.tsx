@@ -3,12 +3,15 @@
 import { useState } from "react";
 import InputField from "../../components/InputField";
 import { useAuth } from "../Context/AuthContext";
+import Error from "@/components/Error";
+import { ErrorType, useException } from "../Context/ExceptionContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const {login} = useAuth();
+  const {error} = useException();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -54,6 +57,7 @@ export default function Login() {
         <p className="text-sm text-gray-600">
           Don't have an account? <a href="/register">Sign up</a>.
         </p>
+        {error && error.type === ErrorType.login && <Error message={error.message}/>}
       </form>
     </div>
   );

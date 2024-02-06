@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import InputField from "../../components/InputField";
 import { useAuth } from "../Context/AuthContext";
+import { ErrorType, useException } from "../Context/ExceptionContext";
+import Error from "@/components/Error";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -10,6 +12,8 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+
+  const { error } = useException();
 
   const { register } = useAuth();
 
@@ -86,6 +90,7 @@ const Register = () => {
         <p className="text-sm text-gray-600">
           Already have an account? <a href="/login">Log in</a>.
         </p>
+        {error && error.type === ErrorType.register && <Error message={error.message}/>}
       </form>
     </div>
   );

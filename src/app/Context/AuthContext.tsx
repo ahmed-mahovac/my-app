@@ -16,6 +16,7 @@ import {
   logout as logoutAPI,
   getCurrentUser,
 } from "../api/auth";
+import { ErrorType, useException } from "./ExceptionContext";
 
 interface User {
   email: string;
@@ -41,6 +42,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [token, setToken] = useState<string | null>(null);
 
+  const {setException} = useException();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -49,8 +52,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setUser(user);
           setIsLoggedIn(true);
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          setException(error instanceof Error ? {...error, type: ErrorType.login} : {...new Error('Unknown error'), type: ErrorType.login}); // not sure if this is correct type
         });
     }
   }, []);
@@ -64,8 +67,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.setItem("token", response.access_token);
         setToken(response.access_token);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        setException(error instanceof Error ? {...error, type: ErrorType.login} : {...new Error('Unknown error'), type: ErrorType.login});
       });
   };
 
@@ -77,8 +80,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.setItem("token", response.access_token);
         setToken(response.access_token);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        setException(error instanceof Error ? {...error, type: ErrorType.register} : {...new Error('Unknown error'), type: ErrorType.register});
       });
   };
 
@@ -90,8 +93,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.removeItem("token");
         setToken(null);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        setException(error instanceof Error ? {...error, type: ErrorType.register} : {...new Error('Unknown error'), type: ErrorType.register});
       });
   };
 
