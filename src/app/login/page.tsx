@@ -10,8 +10,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const {login} = useAuth();
-  const {error} = useException();
+  const { login } = useAuth();
+  const { error } = useException();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,11 +53,18 @@ export default function Login() {
             Login
           </button>
         </div>
-
+        {error && error.type === ErrorType.login && (
+          <Error
+            message={
+              error.response?.data?.message
+                ? error.response?.data?.message
+                : error.message
+            }
+          />
+        )}
         <p className="text-sm text-gray-600">
           Don't have an account? <a href="/register">Sign up</a>.
         </p>
-        {error && error.type === ErrorType.login && <Error message={error.message}/>}
       </form>
     </div>
   );

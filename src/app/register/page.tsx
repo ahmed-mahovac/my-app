@@ -86,7 +86,15 @@ const Register = () => {
             Register
           </button>
         </div>
-        {error && error.type === ErrorType.register && <Error message={error.response?.data?.message ? error.response?.data?.message : error.message}/>}
+        {error && error.type === ErrorType.register && (
+          <Error
+            message={
+              error.response?.data?.message
+                ? error.response?.data?.message
+                : error.message
+            }
+          />
+        )}
         <p className="text-sm text-gray-600">
           Already have an account? <a href="/login">Log in</a>.
         </p>
