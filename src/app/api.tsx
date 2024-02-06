@@ -57,10 +57,20 @@ export const login = async (user: UserLogin): Promise<TokenResponse> => {
 
 export const logout = async (): Promise<LogoutResponse> => {
   try {
-    const response = await axiosInstance.get("/logout");
+    const response = await axiosInstance.get("/logout", {headers: {Authorization: `Bearer ${localStorage.getItem("token")}`}});
     return response.data;
   } catch (error) {
     console.error("Logout error: ", error);
     throw error;
   }
 }
+
+export const getCurrentUser = async (token: string) => {
+  try {
+    const response = await axiosInstance.get("/user", {headers: {Authorization: `Bearer ${token}`}});
+    return response.data;
+  } catch (error) {
+    console.error("Get user error: ", error);
+    throw error;
+  }
+};
