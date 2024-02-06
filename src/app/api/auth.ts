@@ -1,15 +1,6 @@
 import axios from "axios";
-import attachTokenInterceptor from "./middleware/tokenInterceptor";
-
-const BASE_URL = "http://localhost:8000/api";
-
-const axiosInstance = axios.create({
-  baseURL: BASE_URL,
-  timeout: 5000,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+import attachTokenInterceptor from "../middleware/tokenInterceptor";
+import { axiosInstance } from "./config";
 
 attachTokenInterceptor(axiosInstance);
 
@@ -66,7 +57,7 @@ export const logout = async (): Promise<LogoutResponse> => {
     console.error("Logout error: ", error);
     throw error;
   }
-}
+};
 
 export const getCurrentUser = async (token: string) => {
   try {

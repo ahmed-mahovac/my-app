@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import InputField from '../../components/InputField';
-import { register } from '../api';
+import { register } from '../api/auth';
 
 const Register = () => {
   const [name, setName] = useState('');

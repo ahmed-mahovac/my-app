@@ -15,7 +15,7 @@ import {
   register as registerAPI,
   logout as logoutAPI,
   getCurrentUser,
-} from "../api";
+} from "../api/auth";
 
 interface User {
   email: string;
