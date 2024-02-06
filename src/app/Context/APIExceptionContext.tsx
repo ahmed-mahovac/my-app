@@ -1,8 +1,9 @@
 "use client";
 
+import { AxiosError } from "axios";
 import React, { ReactNode, createContext, useContext, useState } from "react";
 
-interface ExceptionContextType {
+interface APIExceptionContextType {
   error: ErrorWithType | null;
   setException: (error: ErrorWithType | null) => void;
 }
@@ -10,13 +11,18 @@ interface ExceptionContextType {
 export enum ErrorType {
   login = 'LOGIN',
   register = 'REGISTER',
-}
+  auth = 'AUTH',
+};
 
-export interface ErrorWithType extends Error {
+export interface ErrorResponse {
+  message?: string;
+};
+
+export interface ErrorWithType extends AxiosError<ErrorResponse> {
   type: ErrorType;
 }
 
-const ExceptionContext = createContext<ExceptionContextType>({
+const APIExceptionContext = createContext<APIExceptionContextType>({
   error: null,
   setException: () => {},
 });
@@ -35,14 +41,14 @@ export const ExceptionProvider: React.FC<ExceptionProviderProps> = ({
   };
 
   return (
-    <ExceptionContext.Provider value={{ error, setException }}>
+    <APIExceptionContext.Provider value={{ error, setException }}>
       {children}
-    </ExceptionContext.Provider>
+    </APIExceptionContext.Provider>
   );
 };
 
-export const useException = (): ExceptionContextType => {
-  const context: ExceptionContextType = useContext(ExceptionContext);
+export const useException = (): APIExceptionContextType => {
+  const context: APIExceptionContextType = useContext(APIExceptionContext);
   if (!context) {
     throw new Error("useException must be used within an ExceptionProvider");
   }

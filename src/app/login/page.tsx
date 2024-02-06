@@ -4,7 +4,7 @@ import { useState } from "react";
 import InputField from "../../components/InputField";
 import { useAuth } from "../Context/AuthContext";
 import Error from "@/components/Error";
-import { ErrorType, useException } from "../Context/ExceptionContext";
+import { ErrorType, useException } from "../Context/APIExceptionContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import InputField from "../../components/InputField";
 import { useAuth } from "../Context/AuthContext";
-import { ErrorType, useException } from "../Context/ExceptionContext";
+import { ErrorType, useException } from "../Context/APIExceptionContext";
 import Error from "@/components/Error";
 
 const Register = () => {
@@ -86,11 +86,10 @@ const Register = () => {
             Register
           </button>
         </div>
-
+        {error && error.type === ErrorType.register && <Error message={error.response?.data?.message ? error.response?.data?.message : error.message}/>}
         <p className="text-sm text-gray-600">
           Already have an account? <a href="/login">Log in</a>.
         </p>
-        {error && error.type === ErrorType.register && <Error message={error.message}/>}
       </form>
     </div>
   );

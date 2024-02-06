@@ -16,7 +16,8 @@ import {
   logout as logoutAPI,
   getCurrentUser,
 } from "../api/auth";
-import { ErrorType, useException } from "./ExceptionContext";
+import { ErrorResponse, ErrorType, useException } from "./APIExceptionContext";
+import { AxiosError } from "axios";
 
 interface User {
   email: string;
@@ -29,7 +30,8 @@ interface AuthContextType {
   logout: () => void;
   getToken: () => string | null;
   register: (userData: UserRegister) => void;
-}
+};
+
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -52,8 +54,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setUser(user);
           setIsLoggedIn(true);
         })
-        .catch((error) => {
-          setException(error instanceof Error ? {...error, type: ErrorType.login} : {...new Error('Unknown error'), type: ErrorType.login}); // not sure if this is correct type
+        .catch((error: AxiosError<ErrorResponse>) => {
+          setException({...error, type: ErrorType.auth});
         });
     }
   }, []);
@@ -67,8 +69,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.setItem("token", response.access_token);
         setToken(response.access_token);
       })
-      .catch((error) => {
-        setException(error instanceof Error ? {...error, type: ErrorType.login} : {...new Error('Unknown error'), type: ErrorType.login});
+      .catch((error: AxiosError<ErrorResponse>) => {
+        setException({...error, type: ErrorType.login});
       });
   };
 
@@ -80,8 +82,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.setItem("token", response.access_token);
         setToken(response.access_token);
       })
-      .catch((error) => {
-        setException(error instanceof Error ? {...error, type: ErrorType.register} : {...new Error('Unknown error'), type: ErrorType.register});
+      .catch((error: AxiosError<ErrorResponse>) => {
+        console.log(error);
+        setException({...error, type: ErrorType.register});
       });
   };
 
@@ -93,8 +96,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.removeItem("token");
         setToken(null);
       })
-      .catch((error) => {
-        setException(error instanceof Error ? {...error, type: ErrorType.register} : {...new Error('Unknown error'), type: ErrorType.register});
+      .catch((error: AxiosError<ErrorResponse>) => {
+        setException({...error, type: ErrorType.auth});
       });
   };
 
