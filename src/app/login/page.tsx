@@ -1,15 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import InputField from "../components/InputField";
+import InputField from "../../components/InputField";
+import { useAuth } from "../Context/AuthContext";
 
-export default function login() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const {login} = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Login with:", { email, password });
+    login({ email, password });
   };
 
   return (

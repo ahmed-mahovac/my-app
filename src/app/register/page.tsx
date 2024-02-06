@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
-import InputField from '../components/InputField';
+import InputField from '../../components/InputField';
+import { register } from '../api';
 
-const register = () => {
+const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,10 +14,13 @@ const register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Basic password matching validation
     if (password === confirmPassword) {
-      // Add your registration logic here
       console.log('Register with:', { name, email, password });
+      register({ name, email, password, confirmPassword }).then((res) => {
+        console.log('Register response:', res);
+      }).catch((err) => {
+        console.log('Register error:', err);
+      });
     } else {
       setPasswordsMatch(false);
     }
@@ -84,4 +88,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default Register;

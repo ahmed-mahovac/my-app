@@ -1,5 +1,14 @@
 import React from "react";
 
+interface InputFieldProps {
+  label: string;
+  type: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+  required: boolean;
+};
+
 export default function InputField({
   label,
   type,
@@ -7,7 +16,7 @@ export default function InputField({
   onChange,
   placeholder,
   required,
-}) {
+} : InputFieldProps) {
   return (
     <div className="mb-4">
       <label
