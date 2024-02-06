@@ -1,26 +1,24 @@
 "use client";
 
-import React, { useState } from 'react';
-import InputField from '../../components/InputField';
-import { register } from '../api/auth';
+import React, { useState } from "react";
+import InputField from "../../components/InputField";
+import { useAuth } from "../Context/AuthContext";
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+
+  const { register } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (password === confirmPassword) {
-      console.log('Register with:', { name, email, password });
-      register({ name, email, password, confirmPassword }).then((res) => {
-        console.log('Register response:', res);
-      }).catch((err) => {
-        console.log('Register error:', err);
-      });
+      console.log("Register with:", { name, email, password });
+      register({ name, email, password, confirmPassword });
     } else {
       setPasswordsMatch(false);
     }
@@ -28,7 +26,10 @@ const Register = () => {
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <form className="bg-white p-8 rounded shadow-md w-full max-w-md" onSubmit={handleSubmit}>
+      <form
+        className="bg-white p-8 rounded shadow-md w-full max-w-md"
+        onSubmit={handleSubmit}
+      >
         <h2 className="text-2xl font-semibold mb-6">Register</h2>
 
         <InputField
@@ -68,7 +69,9 @@ const Register = () => {
         />
 
         {!passwordsMatch && (
-          <p className="text-red-500 text-sm mb-4">Passwords do not match. Please try again.</p>
+          <p className="text-red-500 text-sm mb-4">
+            Passwords do not match. Please try again.
+          </p>
         )}
 
         <div className="mb-6">
