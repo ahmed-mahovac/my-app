@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "../../components/InputField";
 import { useAuth } from "../Context/AuthContext";
 import { ErrorType, useException } from "../Context/APIExceptionContext";
 import Error from "@/components/Error";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -13,9 +14,18 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
+  const router = useRouter();
+  const { isLoggedIn } = useAuth();
+
   const { error } = useException();
 
   const { register } = useAuth();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/products");
+    }
+  }, [isLoggedIn, router]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

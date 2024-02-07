@@ -1,17 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputField from "../../components/InputField";
 import { useAuth } from "../Context/AuthContext";
 import Error from "@/components/Error";
 import { ErrorType, useException } from "../Context/APIExceptionContext";
+import { useRouter } from "next/navigation";
 
 const login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const router = useRouter();
+  const { isLoggedIn, isLoading } = useAuth();
+
   const { login } = useAuth();
   const { error } = useException();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/products");
+    }
+  }, [isLoggedIn, router]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
