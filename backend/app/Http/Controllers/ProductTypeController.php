@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\ProductTypeSearchObject;
+use App\Models\ProductType;
+use App\Services\Interfaces\ProductTypeServiceInterface;
+use App\Services\ProductTypeService;
+use Illuminate\Filesystem\Cache;
+use Illuminate\Http\Request;
+
+class ProductTypeController extends Controller
+{
+
+    protected $productTypeService;
+
+    public function __construct(ProductTypeServiceInterface $productTypeService)
+    {
+        $this->productTypeService = $productTypeService;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $searchObject = new ProductTypeSearchObject($request->all());
+        return $this->productTypeService->getAllProductTypes($searchObject);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        return $this->productTypeService->updateProductType($id, $request->all());
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        return $this->productTypeService->deleteProductType($id);
+    }
+}
