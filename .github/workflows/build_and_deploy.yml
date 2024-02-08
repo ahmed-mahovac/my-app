@@ -19,8 +19,11 @@ jobs:
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-api:test
+    - name: Build the Backend Docker image
+      run: docker build . --file ./backend/Dockerfile --tag backend
 
-    - name: run docker container
-      run: docker run -d -p 8000:80 my-api:test
+    - name: Build the Frontend Docker image
+      run: docker build . --file ./frontend/Dockerfile --tag frontend
+
+    - name: run docker compose
+      run: docker-compose up -d
