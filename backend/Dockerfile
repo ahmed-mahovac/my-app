@@ -31,5 +31,5 @@ RUN composer install
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# workaround so container doesn't stop
-CMD tail -f /dev/null
+RUN php artisan migrate --force && \
+    php artisan db:seed --force
