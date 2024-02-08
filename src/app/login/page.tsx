@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, SyntheticEvent, useEffect, useState } from "react";
 import InputField from "../../components/InputField";
 import { useAuth } from "../Context/AuthContext";
 import Error from "@/components/Error";
 import { ErrorType, useException } from "../Context/APIExceptionContext";
 import { useRouter } from "next/navigation";
 
-const login = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,7 +23,7 @@ const login = () => {
     }
   }, [isLoggedIn, router]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Login with:", { email, password });
     login({ email, password });
@@ -41,7 +41,7 @@ const login = () => {
           label="Email"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
           placeholder="Enter your email"
           required
         />
@@ -73,11 +73,11 @@ const login = () => {
           />
         )}
         <p className="text-sm text-gray-600">
-          Don't have an account? <a href="/register">Sign up</a>.
+          Dont have an account? <a href="/register">Sign up</a>.
         </p>
       </form>
     </div>
   );
 };
 
-export default login;
+export default Login;

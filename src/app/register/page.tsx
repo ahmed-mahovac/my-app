@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import InputField from "../../components/InputField";
 import { useAuth } from "../Context/AuthContext";
 import { ErrorType, useException } from "../Context/APIExceptionContext";
@@ -27,7 +27,7 @@ const Register = () => {
     }
   }, [isLoggedIn, router]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (password === confirmPassword) {

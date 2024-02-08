@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function withAuth(WrappedComponent: React.ComponentType) {
-  return (props: any) => {
+  const AuthWrapper = (props: any) => {
     const router = useRouter();
     const { isLoggedIn, isLoading } = useAuth();
 
@@ -21,4 +21,5 @@ export default function withAuth(WrappedComponent: React.ComponentType) {
 
     return <WrappedComponent {...props} />;
   };
+  return AuthWrapper;
 }
