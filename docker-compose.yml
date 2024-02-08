@@ -21,7 +21,6 @@ services:
       - DB_PASSWORD=root
     depends_on:
       - database  
-    command: bash -c "php artisan migrate"
 
   database:
     image: mysql:5.7

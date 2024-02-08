@@ -28,7 +28,7 @@ export type LogoutResponse = {
 export const register = async (user: UserRegister) => {
   try {
     const response = await axiosInstance.post("/register", {
-      ...user,
+      ...user, c_password: user.confirmPassword,
     });
     return response.data;
   } catch (error) {
