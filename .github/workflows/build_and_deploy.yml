@@ -28,7 +28,7 @@ jobs:
       run: docker build . --file ./frontend/Dockerfile --tag frontend:latest
 
     - name: Authenticate with GitHub Container Registry
-      run: docker login ghcr.io -u ${{ github.actor }} --password ${{ secrets.GITHUB_REGISTRY_TOKEN }} 
+      run: docker login ghcr.io -u ${{ github.actor }} --password ${{ secrets.DOCKER_REGISTRY_SECRET }} 
 
     - name: Tag and push Backend Docker image to GitHub Container Registry
       run: |
