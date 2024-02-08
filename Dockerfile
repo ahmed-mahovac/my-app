@@ -1,4 +1,4 @@
-# Use Node.js version 14 as base image
+# Use Node.js as base image, version required for nextjs
 FROM node:18.18.2
 
 # Set working directory
@@ -16,7 +16,7 @@ COPY . .
 # Build the Next.js application
 RUN npm run build
 
-# Expose port 3000 (adjust if your Next.js app uses a different port)
+# Expose port 3000
 EXPOSE 3000
 
 # Command to start the Next.js application
