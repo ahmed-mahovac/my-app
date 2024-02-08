@@ -21,3 +21,11 @@ jobs:
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-api:$(date +%s)
+
+  deploy:
+
+    runs-on: self-hosted
+
+    steps:
+    - name: run docker container
+      run: docker run -d -p 8000:80 my-api:$(date +%s)
