@@ -27,5 +27,8 @@ jobs:
     - name: Build the Frontend Docker image
       run: docker build . --file ./frontend/Dockerfile --tag frontend:latest
 
+    - name: stop running containers
+      run: docker-compose down
+
     - name: run docker compose
       run: docker-compose up -d
