@@ -21,7 +21,7 @@ services:
       - DB_PASSWORD=root
     depends_on:
       - database  
-    command: ["sh", "-c", "php artisan migrate && php artisan db:seed && tail -f /dev/null"] # workaround so container doesn't stop
+    command: ["sh", "-c", "php artisan migrate && tail -f /dev/null"] # workaround so container doesn't stop
 
   database:
     image: mysql:5.7
