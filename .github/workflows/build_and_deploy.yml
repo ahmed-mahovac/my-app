@@ -22,10 +22,10 @@ jobs:
         composer validate --strict
 
     - name: Build the Backend Docker image
-      run: docker build . --file ./backend/Dockerfile --tag backend
+      run: docker build . --file ./backend/Dockerfile --tag backend:latest
 
     - name: Build the Frontend Docker image
-      run: docker build . --file ./frontend/Dockerfile --tag frontend
+      run: docker build . --file ./frontend/Dockerfile --tag frontend:latest
 
     - name: run docker compose
       run: docker-compose up -d

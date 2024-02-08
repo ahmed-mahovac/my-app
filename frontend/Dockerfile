@@ -11,7 +11,7 @@ COPY package.json package-lock.json ./
 RUN npm install --no-package-lock
 
 # Copy the rest of the application code
-COPY . .
+COPY ./frontend .
 
 # Build the Next.js application
 RUN npm run build
