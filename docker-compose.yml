@@ -20,8 +20,7 @@ services:
       - DB_USERNAME=root
       - DB_PASSWORD=root
     depends_on:
-      - database  
-    command: ["sh", "-c", "php artisan migrate && php artisan db:seed"]
+      - database 
 
   database:
     image: mysql:5.7
