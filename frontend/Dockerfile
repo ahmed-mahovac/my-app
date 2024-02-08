@@ -5,7 +5,7 @@ FROM node:18.18.2
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
-COPY package.json package-lock.json ./
+COPY ./frontend/package.json ./frontend/package-lock.json ./
 
 # Install dependencies using npm
 RUN npm install --no-package-lock
