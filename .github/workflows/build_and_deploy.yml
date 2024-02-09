@@ -59,4 +59,4 @@ jobs:
       run: docker-compose down
 
     - name: run docker compose
-      run: docker-compose up -d
+      run: docker-compose up --pull -d

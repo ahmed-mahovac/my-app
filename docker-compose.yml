@@ -21,7 +21,7 @@ services:
       - DB_PASSWORD=root
     depends_on:
       - database  
-    command: ["sh", "-c", "php artisan migrate --force && apache2-foreground"] # workaround to keep the container running
+    #command: ["sh", "-c", "php artisan migrate --force && apache2-foreground"] # workaround to keep the container running
 
   database:
     image: mysql:5.7
