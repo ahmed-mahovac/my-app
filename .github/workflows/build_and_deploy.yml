@@ -33,12 +33,12 @@ jobs:
     - name: Tag and push Backend Docker image to GitHub Container Registry
       run: |
         docker tag backend:latest ghcr.io/${{ github.repository_owner }}/my-app-backend:latest
-        docker push ghcr.io/${{ github.repository_owner }}/backend:latest
+        docker push ghcr.io/${{ github.repository_owner }}/my-app-backend:latest
 
     - name: Tag and push Frontend Docker image to GitHub Container Registry
       run: |
         docker tag frontend:latest ghcr.io/${{ github.repository_owner }}/my-app-frontend:latest
-        docker push ghcr.io/${{ github.repository_owner }}/frontend:latest
+        docker push ghcr.io/${{ github.repository_owner }}/my-app-frontend:latest
   
   deploy:
 
