@@ -49,7 +49,7 @@ jobs:
     steps:
     - name: Copy Docker Compose file
       run: | # depends on concrete runner machine // curl -sSL -o . "https://github.com/ahmed-mahovac/my-app/docker-compose.yml" 
-        Invoke-WebRequest -Uri "https://github.com/ahmed-mahovac/my-app/docker-compose.yml" -OutFile "docker-compose.yml"
+        Invoke-WebRequest -Uri "https://github.com/ahmed-mahovac/my-app/docker-compose.yml" -OutFile "docker-compose.yml" 
 
     - name: Authenticate with GitHub Container Registry
       run: docker login ghcr.io -u ${{ github.actor }} --password ${{ secrets.DOCKER_REGISTRY_SECRET }} 
