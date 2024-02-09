@@ -11,7 +11,7 @@ permissions:
 jobs:
   build:
 
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -32,15 +32,27 @@ jobs:
 
     - name: Tag and push Backend Docker image to GitHub Container Registry
       run: |
-        docker tag backend:latest ghcr.io/${{ github.repository_owner }}/backend:latest
+        docker tag backend:latest ghcr.io/${{ github.repository_owner }}/my-app-backend:latest
         docker push ghcr.io/${{ github.repository_owner }}/backend:latest
 
     - name: Tag and push Frontend Docker image to GitHub Container Registry
       run: |
-        docker tag frontend:latest ghcr.io/${{ github.repository_owner }}/frontend:latest
+        docker tag frontend:latest ghcr.io/${{ github.repository_owner }}/my-app-frontend:latest
         docker push ghcr.io/${{ github.repository_owner }}/frontend:latest
+  
+  deploy:
 
-    - name: stop running containers
+    runs-on: self-hosted
+
+    steps:
+    - name: Copy Docker Compose file
+      run: |
+        curl -sSL -o . "https://github.com/ahmed-mahovac/my-app/docker-compose.yml"
+
+    - name: Authenticate with GitHub Container Registry
+      run: docker login ghcr.io -u ${{ github.actor }} --password ${{ secrets.DOCKER_REGISTRY_SECRET }} 
+
+    - name: stop running containers # if they are already running
       run: docker-compose down
 
     - name: run docker compose
