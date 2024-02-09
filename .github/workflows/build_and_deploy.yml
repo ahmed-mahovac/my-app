@@ -44,6 +44,8 @@ jobs:
 
     runs-on: self-hosted
 
+    needs: build
+
     steps:
     - name: Copy Docker Compose file
       run: |
