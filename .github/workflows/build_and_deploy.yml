@@ -58,5 +58,8 @@ jobs:
     - name: stop running containers # if they are already running
       run: docker-compose down
 
+    - name: pull latest images
+      run: docker-compose pull
+
     - name: run docker compose
-      run: docker-compose up --pull
+      run: docker-compose up -d
