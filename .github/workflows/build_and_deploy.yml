@@ -2,7 +2,7 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -10,56 +10,52 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Validate composer.json and composer.lock
-      run: |
-        cd backend
-        composer validate --strict
+      - name: Validate composer.json and composer.lock
+        run: |
+          cd backend
+          composer validate --strict
 
-    - name: Build the Backend Docker image
-      run: docker build . --file ./backend/Dockerfile --tag backend:latest
+      - name: Build the Backend Docker image
+        run: docker build . --file ./backend/Dockerfile --tag backend:latest
 
-    - name: Build the Frontend Docker image
-      run: docker build . --file ./frontend/Dockerfile --tag frontend:latest
+      - name: Build the Frontend Docker image
+        run: docker build . --file ./frontend/Dockerfile --tag frontend:latest
 
-    - name: Authenticate with GitHub Container Registry
-      run: docker login ghcr.io -u ${{ github.actor }} --password ${{ secrets.DOCKER_REGISTRY_SECRET }} 
+      - name: Authenticate with GitHub Container Registry
+        run: docker login ghcr.io -u ${{ github.actor }} --password ${{ secrets.DOCKER_REGISTRY_SECRET }}
 
-    - name: Tag and push Backend Docker image to GitHub Container Registry
-      run: |
-        docker tag backend:latest ghcr.io/${{ github.repository_owner }}/my-app-backend:latest
-        docker push ghcr.io/${{ github.repository_owner }}/my-app-backend:latest
+      - name: Tag and push Backend Docker image to GitHub Container Registry
+        run: |
+          docker tag backend:latest ghcr.io/${{ github.repository_owner }}/my-app-backend:latest
+          docker push ghcr.io/${{ github.repository_owner }}/my-app-backend:latest
 
-    - name: Tag and push Frontend Docker image to GitHub Container Registry
-      run: |
-        docker tag frontend:latest ghcr.io/${{ github.repository_owner }}/my-app-frontend:latest
-        docker push ghcr.io/${{ github.repository_owner }}/my-app-frontend:latest
-  
+      - name: Tag and push Frontend Docker image to GitHub Container Registry
+        run: |
+          docker tag frontend:latest ghcr.io/${{ github.repository_owner }}/my-app-frontend:latest
+          docker push ghcr.io/${{ github.repository_owner }}/my-app-frontend:latest
+
   deploy:
-
     runs-on: self-hosted
 
     needs: build
 
     steps:
-    - name: Copy Docker Compose file
-      uses: actions/checkout@v3 # along with the other files but nvm
-      # depends on concrete runner machine // curl -sSL -o . "https://github.com/ahmed-mahovac/my-app/docker-compose.yml" 
-        
+      - name: Copy Docker Compose file
+        uses: actions/checkout@v3
 
-    - name: Authenticate with GitHub Container Registry
-      run: docker login ghcr.io -u ${{ github.actor }} --password ${{ secrets.DOCKER_REGISTRY_SECRET }} 
+      - name: Authenticate with GitHub Container Registry
+        run: docker login ghcr.io -u ${{ github.actor }} --password ${{ secrets.DOCKER_REGISTRY_SECRET }}
 
-    - name: stop running containers # if they are already running
-      run: docker-compose down
+      - name: stop running containers # if they are already running
+        run: docker-compose down
 
-    - name: pull latest images
-      run: docker-compose pull
+      - name: pull latest images
+        run: docker-compose pull
 
-    - name: run docker compose
-      run: docker-compose up -d
+      - name: run docker compose
+        run: docker-compose up -d
