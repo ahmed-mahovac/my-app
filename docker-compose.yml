@@ -18,6 +18,11 @@ services:
       - DB_DATABASE=mysql
       - DB_USERNAME=${ DATABASE_USERNAME }
       - DB_PASSWORD=${ DATABASE_PASSWORD }
+      - CACHE_DRIVER=redis
+      - REDIS_CLIENT=predis
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=null
+      - REDIS_PORT=6379
     depends_on:
       - database
       - redis
