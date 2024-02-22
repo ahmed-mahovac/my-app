@@ -20,6 +20,7 @@ services:
       - DB_PASSWORD=${ DATABASE_PASSWORD }
     depends_on:
       - database
+      - redis
     command: ["sh", "-c", "php artisan migrate --force && apache2-foreground"] # workaround to keep the container running
 
   database:
@@ -31,6 +32,11 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
 
 volumes:
   db_data:
