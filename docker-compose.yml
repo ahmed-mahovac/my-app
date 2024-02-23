@@ -31,8 +31,8 @@ services:
   database:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: ${ DATABASE_PASSWORD }
-      MYSQL_DATABASE: mysql
+      - MYSQL_ROOT_PASSWORD=${ DATABASE_PASSWORD }
+      - MYSQL_DATABASE=mysql
     ports:
       - "3306:3306"
     volumes:
