@@ -44,9 +44,10 @@ jobs:
       - name: Copy Docker Compose file
         uses: actions/checkout@v3
 
-      - name: Generate .env file
+        - name: Generate .env file
         run: |
-          echo -e "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}\nDATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
+          echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> .env
+          echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
 
       - name: Authenticate with GitHub Container Registry
         run: docker login ghcr.io -u ${{ secrets.DOCKER_REGISTRY_USERNAME }} --password ${{ secrets.DOCKER_REGISTRY_SECRET }}
