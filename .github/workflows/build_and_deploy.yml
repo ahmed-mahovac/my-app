@@ -44,7 +44,7 @@ jobs:
       - name: Copy Docker Compose file
         uses: actions/checkout@v3
 
-        - name: Generate .env file
+      - name: Generate .env file
         run: |
           echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> .env
           echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
