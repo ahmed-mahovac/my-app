@@ -39,7 +39,7 @@ jobs:
     runs-on: self-hosted
 
     env:
-      DATABASE_USERNAME: ${{ secrets.DOCKER_REGISTRY_SECRET }}
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
     needs: build
@@ -48,7 +48,7 @@ jobs:
       - name: Copy Docker Compose file
         uses: actions/checkout@v3
 
-      - run: echo "Value of DATABASE_PASSWORD is $DATABASE_USERNAME"
+      - run: echo "Value of DATABASE_PASSWORD is ${{ env.DATABASE_PASSWORD }}"
 
       - name: Authenticate with GitHub Container Registry
         run: docker login ghcr.io -u ${{ secrets.DOCKER_REGISTRY_USERNAME }} --password ${{ secrets.DOCKER_REGISTRY_SECRET }}
