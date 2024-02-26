@@ -49,6 +49,9 @@ jobs:
           echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> .env
           echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
 
+      - name: Remove null characters from .env file
+        run: tr -d '\0' < .env > .env.tmp && mv .env.tmp .env
+
       - name: Authenticate with GitHub Container Registry
         run: docker login ghcr.io -u ${{ secrets.DOCKER_REGISTRY_USERNAME }} --password ${{ secrets.DOCKER_REGISTRY_SECRET }}
 
