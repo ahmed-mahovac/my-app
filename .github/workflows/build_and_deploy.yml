@@ -51,8 +51,7 @@ jobs:
 
       - name: Remove null characters from .env file
         run: |
-          cat .env
-          tr -d '\0' > .env.tmp
+          cat .env | tr -d '\0' > .env.tmp
           mv .env.tmp .env
 
       - name: Authenticate with GitHub Container Registry
