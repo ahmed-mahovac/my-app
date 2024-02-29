@@ -56,6 +56,6 @@ class AuthService
 
     private function createToken(User $user)
     {
-        return $user->createToken('Personal Access Token')->plainTextToken;
+        return $user->createToken('Personal Access Token')->accessToken;
     }
 }
