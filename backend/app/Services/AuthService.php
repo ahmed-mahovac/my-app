@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Laravel\Passport\Passport;
 
 class AuthService
 {
@@ -56,6 +57,8 @@ class AuthService
 
     private function createToken(User $user)
     {
-        return $user->createToken('Personal Access Token')->accessToken;
+        Log::info(Passport::scopeIds());
+        // all scopes for users who are coming from 1st party app
+        return $user->createToken('Personal Access Token', Passport::scopeIds())->accessToken;
     }
 }

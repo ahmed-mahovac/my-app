@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Log;
 Route::middleware('auth:api')->group(function () {
     Route::get('logout', [AuthController::class, 'logout']);
 
-    Route::get('/user', function (Request $request) {
+    Route::middleware('scopes:view-email')->get('/user', function (Request $request) {
         Log::info('user', ['user' => $request->header('Authorization')]);
         return $request->user();
     });
