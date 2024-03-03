@@ -5,7 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Log;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,7 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->group(function () {
     Route::get('logout', [AuthController::class, 'logout']);
 
-    Route::get('/user', function (Request $request) {
+    Route::middleware('scopes:view-email')->get('/user', function (Request $request) {
+        Log::info('user', ['user' => $request->header('Authorization')]);
         return $request->user();
     });
 
