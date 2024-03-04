@@ -32,6 +32,10 @@ Route::middleware('auth:api')->group(function () {
 
         Route::put('/productTypes/{id}', [ProductTypeController::class, 'update']);
 
+        // products file upload
+        
+       // Route::post('/products', [ProductController::class, 'upload']);
+
         // state transitions
 
         Route::post('/products/{id}/activate', [ProductController::class, 'activateProduct']);
@@ -45,6 +49,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/products/{id}/variants', [ProductController::class, 'addVariant']);
 
         Route::delete('/products/{productId}/variants/{variantId}', [ProductController::class, 'removeVariant']);
+
     });
 });
 
@@ -61,3 +66,5 @@ Route::get('/productTypes', [ProductTypeController::class, 'index']);
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
 Route::post('register', [AuthController::class, 'register']);
+
+Route::post('/products', [ProductController::class, 'upload']);

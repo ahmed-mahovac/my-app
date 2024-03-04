@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ProductSearchObject;
 use App\Http\Requests\RemoveVariantRequest;
+use App\Http\Requests\UploadProductsRequest;
 use App\Services\Interfaces\ProductServiceInterface;
 
 class ProductController extends Controller
@@ -160,4 +161,12 @@ class ProductController extends Controller
             'message' => 'Successfully removed variant from product!',
         ]);
     }
+
+    public function upload(UploadProductsRequest $request)
+    {
+        $file = $request->file('file');
+        $file->getPath();
+        $this->productService->processProducts($file);
+    }
+
 }

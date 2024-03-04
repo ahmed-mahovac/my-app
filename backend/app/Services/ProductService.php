@@ -4,10 +4,14 @@ namespace App\Services;
 
 use App\Exceptions\UserException;
 use App\Http\Requests\ProductSearchObject;
+use App\Jobs\StoreProductsChunk;
 use App\Models\Product;
 use App\Models\ProductWithNewestVariant;
 use App\Services\Interfaces\ProductServiceInterface;
+use GuzzleHttp\Psr7\UploadedFile;
+use Illuminate\Http\UploadedFile as HttpUploadedFile;
 use Illuminate\Support\Facades\Log;
+use Spatie\SimpleExcel\SimpleExcelReader;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductService extends BaseService implements ProductServiceInterface
@@ -95,6 +99,21 @@ class ProductService extends BaseService implements ProductServiceInterface
         }
 
         $this->stateMachineService->removeVariant($product, $variantId);
+    }
+
+    public function processProducts(HttpUploadedFile $file){
+        Log::info('Processing file', ['file' => $file]);
+        $rows = SimpleExcelReader::create($file->getPath())
+        ->useDelimiter(',')
+        ->useHeaders(['ID', 'title', 'description']) // modify
+        ->getRows();
+
+        $chunks = $rows->chunk(10);
+
+        $chunks->each(function ($chunk) {
+            // create a job and dispatch it
+            StoreProductsChunk::dispatch($chunk);
+        });
     }
 
     private function additionalFilters(ProductSearchObject $searchObject, $query)
