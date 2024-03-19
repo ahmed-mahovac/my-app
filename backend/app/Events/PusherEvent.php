@@ -1,30 +1,35 @@
 <?php
 
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Foundation\Events\Dispatchable;
+namespace App\Events;
+
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
-class MyEvent implements ShouldBroadcast
+class PusherEvent implements ShouldBroadcastNow
 {
-  use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-  public $message;
+    public $message;
 
-  public function __construct($message)
-  {
-      $this->message = $message;
-  }
+    public function __construct($message)
+    {
+        $this->message = $message;
+    }
 
-  public function broadcastOn()
-  {
-    // specify channels
-      return ['my-channel'];
-  }
+    public function broadcastOn()
+    {
+        // specify channels the message should broadcast to
+        return ['my-channel'];
+    }
 
-  public function broadcastAs()
-  {
-    // event name
-      return 'message-event';
-  }
+    public function broadcastAs()
+    {
+        return 'my-message';
+    }
 }

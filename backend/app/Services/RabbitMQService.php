@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use App\Events\PusherEvent;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
-use PusherEvent;
 
 class RabbitMQService
 {
