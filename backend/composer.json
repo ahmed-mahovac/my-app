@@ -13,6 +13,7 @@
         "laravel/passport": "^10.4",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "php-amqplib/php-amqplib": "^2.8",
         "predis/predis": "^2.2",
         "spatie/simple-excel": "^3.2"
     },
