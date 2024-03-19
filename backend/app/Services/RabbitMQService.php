@@ -7,25 +7,34 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class RabbitMQService
 {
+
+    protected $connection;
+    protected $channel;
+
+    public function __construct(){
+        // queue definition with rules
+        $this->connection = new AMQPStreamConnection(env('MQ_HOST'), env('MQ_PORT'), env('MQ_USER'), env('MQ_PASS'), env('MQ_VHOST'));
+        $this->channel = $this->connection->channel();
+        $this->channel->exchange_declare('laravel_exchange', 'direct', false, false, false);
+        $this->channel->queue_declare('laravel_queue', false, false, false, false);
+        $this->channel->queue_bind('laravel_queue', 'laravel_exchange', 'test_key');
+    }
+
+    public function __destruct(){
+        $this->channel->close();
+        $this->connection->close();
+    }
+
     public function publish($message)
     {
-        // queue definition with rules
-        $connection = new AMQPStreamConnection(env('MQ_HOST'), env('MQ_PORT'), env('MQ_USER'), env('MQ_PASS'), env('MQ_VHOST'));
-        $channel = $connection->channel();
-        $channel->exchange_declare('laravel_exchange', 'direct', false, false, false);
-        $channel->queue_declare('laravel_queue', false, false, false, false);
-        $channel->queue_bind('laravel_queue', 'laravel_exchange', 'test_key');
-
         // sending message
         $msg = new AMQPMessage($message);
-        $channel->basic_publish($msg, 'laravel_exchange', 'test_key');
+        $this->channel->basic_publish($msg, 'laravel_exchange', 'test_key');
         echo "Sent $message to laravel_exchange / laravel_queue.\n";
         
         // so the echo output not included in the response
         ob_clean();
         
-        $channel->close();
-        $connection->close();
     }
 
     public function consume()
@@ -56,9 +65,5 @@ class RabbitMQService
             $channel->wait(null,false,10);
         }
 
-        $channel->close();
-        $connection->close();
-
-        return $messages;
     }
 }
