@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MessagingController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTypeController;
 use Illuminate\Http\Request;
@@ -33,8 +34,8 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/productTypes/{id}', [ProductTypeController::class, 'update']);
 
         // products file upload
-        
-       // Route::post('/products', [ProductController::class, 'upload']);
+
+        // Route::post('/products', [ProductController::class, 'upload']);
 
         // state transitions
 
@@ -49,7 +50,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/products/{id}/variants', [ProductController::class, 'addVariant']);
 
         Route::delete('/products/{productId}/variants/{variantId}', [ProductController::class, 'removeVariant']);
-
     });
 });
 
@@ -68,3 +68,5 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('register', [AuthController::class, 'register']);
 
 Route::post('/products', [ProductController::class, 'upload']);
+
+Route::post("/message", [MessagingController::class, 'publishMessage']);
