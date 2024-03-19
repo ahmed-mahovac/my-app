@@ -4,6 +4,7 @@ namespace App\Services;
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use PusherEvent;
 
 class RabbitMQService
 {
@@ -49,6 +50,7 @@ class RabbitMQService
             echo ' [x] Received ', $msg->body, "\n";
             array_push($messages, json_decode($msg->body, true));
             $channel->basic_ack($msg->delivery_info['delivery_tag']);
+            event(new PusherEvent($msg));
         };
 
         
